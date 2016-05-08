@@ -81,28 +81,6 @@ class MapperSelect implements SubselectInterface
         return $this->tableSelect->getBindValues();
     }
 
-    /**
-     * debug helper
-     * include warning message when there are bind-values
-     */
-    public function getFinalStatement()
-    {
-        $statement = $this->getStatement();
-        $values = $this->getBindValues();
-        if (empty($values))
-        	return $statement;
-
-        foreach ($values as $k => $v) {
-            $k_new = ":$k";
-            $v_new = "'$v'";
-            $values[$k_new] = $v_new;
-            unset($values[$k]);
-        }
-        $statement = strtr($statement, $values);
-        $statement = "/* Warning: approximate statement with bind-values, the real final statement only exists on database side */\n\n" . $statement;
-        return $statement;
-    }
-
     public function with(array $with)
     {
         $this->with = $with;
